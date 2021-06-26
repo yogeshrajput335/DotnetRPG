@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,5 +42,38 @@ namespace DotnetRPG.Services.CharacterService
             serviceResponse.Data = _mapper.Map<GetCharacterDto>(characters.FirstOrDefault(c=>c.Id == id));
             return serviceResponse;
         }
+        public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto c){
+            
+            var serviceResponse = new ServiceResponse<GetCharacterDto>();
+            try{
+            Character character = characters.FirstOrDefault(d=>d.Id==c.Id);
+            character.Name = c.Name;
+            character.HitPoints = c.HitPoints;
+            character.Strength = c.Strength;
+            character.Defence = c.Defence;
+            character.Intelligence = c.Intelligence;
+            character.Class = c.Class;
+
+            serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
+            } catch (Exception ex){
+                serviceResponse.Success=false;
+                serviceResponse.Message= "Error in udpate method";
+            }
+            return serviceResponse;
+        }
+        public async Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id){
+            var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            try{
+            Character character = characters.First(d=>d.Id==id);
+            characters.Remove(character);
+
+            serviceResponse.Data = characters.Select(c=>_mapper.Map<GetCharacterDto>(c)).ToList();
+            } catch (Exception ex){
+                serviceResponse.Success=false;
+                serviceResponse.Message= "Error in delete method";
+            }
+            return serviceResponse;
+        }
+         
     }
 }
