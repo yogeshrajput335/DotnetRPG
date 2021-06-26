@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
 
 namespace DotnetRPG
 {
@@ -33,6 +34,7 @@ namespace DotnetRPG
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DotnetRPG", Version = "v1" });
             });
+            services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ICharacterService,CharacterService>();
         }
 
